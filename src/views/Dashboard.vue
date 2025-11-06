@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import StatCard from '@/components/StatCard.vue'
+import { Flame, Clock, Calendar, Activity } from 'lucide-vue-next'
 import { Line } from 'vue-chartjs'
 import {
   Chart as ChartJS,

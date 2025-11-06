@@ -5,38 +5,38 @@
 /* Design system tokens (HSL-based) */
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 220 15% 15%;
+    --background: 140 20% 94%;  /* Soft Leaf */
+    --foreground: 150 10% 10%;  /* Charcoal Black */
 
-    --card: 0 0% 100%;
-    --card-foreground: 220 15% 15%;
+    --card: 0 0% 100%;         /* Clean White */
+    --card-foreground: 150 10% 10%;  /* Charcoal Black */
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 220 15% 15%;
+    --popover: 0 0% 100%;      /* Clean White */
+    --popover-foreground: 150 10% 10%;  /* Charcoal Black */
 
-    /* Primary: Warm orange/red for stove/fire theme */
-    --primary: 18 95% 55%;
-    --primary-foreground: 0 0% 100%;
-    --primary-glow: 18 100% 65%;
+    /* Primary: Vibrant Energy Green from logo */
+    --primary: 100 85% 45%;    /* Vibrant Energy Green */
+    --primary-foreground: 0 0% 100%;  /* Clean White */
+    --primary-glow: 100 90% 55%;  /* Lime Glow */
 
-    /* Secondary: Cool blue for data/tech theme */
-    --secondary: 210 70% 50%;
-    --secondary-foreground: 0 0% 100%;
+    /* Secondary: Eco Teal for tech feel */
+    --secondary: 170 50% 40%;  /* Eco Teal */
+    --secondary-foreground: 0 0% 100%;  /* Clean White */
 
-    /* Muted: Soft grays */
-    --muted: 220 15% 96%;
-    --muted-foreground: 220 10% 45%;
+    /* Muted: Eco Slate */
+    --muted: 140 10% 45%;      /* Eco Slate */
+    --muted-foreground: 140 25% 20%;  /* Forest Core */
 
-    /* Accent: Bright teal for highlights */
-    --accent: 180 65% 50%;
-    --accent-foreground: 0 0% 100%;
+    /* Accent: Fresh Lime */
+    --accent: 105 70% 45%;     /* Fresh Lime Accent */
+    --accent-foreground: 0 0% 100%;  /* Clean White */
 
-    --destructive: 0 84% 60%;
+    --destructive: 0 84% 60%;  /* Keep original destructive */
     --destructive-foreground: 0 0% 100%;
 
-    --border: 220 15% 90%;
-    --input: 220 15% 90%;
-    --ring: 18 95% 55%;
+    --border: 140 10% 45%;     /* Eco Slate */
+    --input: 140 10% 45%;      /* Eco Slate */
+    --ring: 100 85% 45%;       /* Vibrant Energy Green */;
 
     --radius: 0.75rem;
 

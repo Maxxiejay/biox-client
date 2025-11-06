@@ -3,24 +3,32 @@ import { ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { Flame, Mail, Lock } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
+import { authService } from '@/services/auth.service'
 
 const router = useRouter()
 const email = ref('')
 const password = ref('')
 const isLoading = ref(false)
 
-function handleLogin(e) {
+async function handleLogin(e) {
   e.preventDefault()
   isLoading.value = true
-  setTimeout(() => {
-    if (email.value && password.value) {
-      const role = email.value.includes('admin') ? 'admin' : 'user'
-      localStorage.setItem('user', JSON.stringify({ email: email.value, role }))
+
+  if (email.value && password.value) {
+    try {
+      await authService.login({ email: email.value, password: password.value })
       toast.success('Welcome back!', { description: "You've successfully logged in." })
+      const role = JSON.parse(localStorage.getItem('user')).role
       router.push(role === 'admin' ? '/admin/dashboard' : '/dashboard')
+    } catch (error) {
+      toast.error('Login failed', { description: error })
+      // console.log(error);
+      
+      isLoading.value = false
     }
-    isLoading.value = false
-  }, 1000)
+
+  }
+  isLoading.value = false
 }
 </script>
 
@@ -31,7 +39,7 @@ function handleLogin(e) {
         <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-fire rounded-2xl shadow-fire mb-4">
           <Flame class="w-8 h-8 text-primary-foreground" />
         </div>
-        <h1 class="text-3xl font-bold text-foreground mb-2">Smart Stove Monitor</h1>
+        <h1 class="text-3xl font-bold text-foreground mb-2">Stove Sense</h1>
         <p class="text-muted-foreground">Monitor and optimize your cooking efficiency</p>
       </div>
 
@@ -46,17 +54,20 @@ function handleLogin(e) {
               <label for="email" class="text-sm font-medium">Email</label>
               <div class="relative">
                 <Mail class="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <input id="email" type="email" v-model="email" placeholder="you@example.com" required class="pl-10 w-full h-10 rounded-md border border-border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
+                <input id="email" type="email" v-model="email" placeholder="you@example.com" required
+                  class="pl-10 w-full h-10 rounded-md border border-border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
               </div>
             </div>
             <div class="space-y-2">
               <label for="password" class="text-sm font-medium">Password</label>
               <div class="relative">
                 <Lock class="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                <input id="password" type="password" v-model="password" placeholder="••••••••" required class="pl-10 w-full h-10 rounded-md border border-border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
+                <input id="password" type="password" v-model="password" placeholder="••••••••" required
+                  class="pl-10 w-full h-10 rounded-md border border-border bg-background px-3 text-sm outline-none focus:ring-2 focus:ring-ring" />
               </div>
             </div>
-            <button type="submit" :disabled="isLoading" class="w-full inline-flex items-center justify-center h-10 rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60">
+            <button type="submit" :disabled="isLoading"
+              class="w-full inline-flex items-center justify-center h-10 rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60">
               {{ isLoading ? 'Signing in...' : 'Sign In' }}
             </button>
           </form>
@@ -75,7 +86,4 @@ function handleLogin(e) {
   </div>
 </template>
 
-<style scoped>
-</style>
-
-
+<style scoped></style>

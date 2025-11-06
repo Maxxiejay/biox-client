@@ -12,6 +12,7 @@ const user = (() => {
 
 function handleLogout() {
   localStorage.removeItem('user')
+  localStorage.removeItem('token')
   toast.success("Logged out", { description: "You've been successfully logged out." })
   router.push('/login')
 }

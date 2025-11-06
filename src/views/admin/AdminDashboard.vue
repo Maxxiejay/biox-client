@@ -67,10 +67,10 @@ const options = {
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatCard title="Total Users" value="1,284" trend="+18% this month" :trendUp="true" iconBg="cool" />
-            <StatCard title="Active Stoves" value="2,847" trend="+23% this month" :trendUp="true" iconBg="fire" />
-            <StatCard title="Total Fuel Today" value="342 kg" trend="+8% vs yesterday" :trendUp="true" iconBg="muted" />
-            <StatCard title="Avg Efficiency" value="82%" trend="+2% improvement" :trendUp="true" iconBg="cool" />
+            <StatCard title="Total Users" :icon="Users" value="1,284" trend="+18% this month" :trendUp="true" iconBg="cool" />
+            <StatCard title="Active Stoves" :icon="Flame" value="2,847" trend="+23% this month" :trendUp="true" iconBg="fire" />
+            <StatCard title="Total Fuel Today" :icon="Activity" value="342 kg" trend="+8% vs yesterday" :trendUp="true" iconBg="cool" />
+            <StatCard title="Avg Efficiency" value="82%" :icon="TrendingUp" trend="+2% improvement" :trendUp="true" iconBg="cool" />
           </div>
 
           <div class="border border-border rounded-xl shadow-card">

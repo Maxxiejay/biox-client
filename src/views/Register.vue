@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { useRouter, RouterLink } from 'vue-router'
 import { Flame, Mail, Lock, User } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
+import { authService } from '@/services/auth.service'
 
 const router = useRouter()
 const name = ref('')
@@ -10,16 +11,24 @@ const email = ref('')
 const password = ref('')
 const isLoading = ref(false)
 
-function handleRegister(e) {
+async function handleRegister(e) {
   e.preventDefault()
   isLoading.value = true
-  setTimeout(() => {
-    if (name.value && email.value && password.value) {
-      toast.success('Account created!', { description: 'Welcome to Smart Stove Monitor. You can now sign in.' })
-      router.push('/login')
+
+  if (email.value && password.value) {
+    try {
+      await authService.signup({ email: email.value, password: password.value, name: name.value })
+      toast.success('Welcome!', { description: "You've successfully signed up." })
+      router.push('/dashboard')
+    } catch (error) {
+      toast.error('Registration failed', { description: error.message })
+      // console.log(error);
+      
+      isLoading.value = false
     }
-    isLoading.value = false
-  }, 1000)
+
+  }
+  isLoading.value = false
 }
 </script>
 
