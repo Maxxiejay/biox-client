@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import { Flame, QrCode } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
+import { stoveService } from '../services/stove.service'
 
 const router = useRouter()
 const sidebarOpen = ref(false)
@@ -20,15 +21,22 @@ onMounted(() => {
 function handlePair(e) {
   e.preventDefault()
   isLoading.value = true
-  setTimeout(() => {
     if (stoveId.value && pairingCode.value) {
+      stoveService.pair({
+        stoveId: stoveId.value,
+        pairingCode: pairingCode.value,
+      }).then(() => {
       toast.success('Stove paired successfully!', { description: `Stove ${stoveId.value} has been added to your account.` })
       stoveId.value = ''
       pairingCode.value = ''
       router.push('/dashboard')
+      }).catch((error) => {
+        console.log(error);
+        
+        toast.error('Pairing failed', { description: error.response?.data?.error || 'Please check the Stove ID and Pairing Code and try again.' })
+      })
     }
     isLoading.value = false
-  }, 1000)
 }
 </script>
 

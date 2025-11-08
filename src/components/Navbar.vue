@@ -16,6 +16,8 @@ function handleLogout() {
   toast.success("Logged out", { description: "You've been successfully logged out." })
   router.push('/login')
 }
+
+const logo = new URL('@/assets/BIOX-flame.jpg', import.meta.url).href
 </script>
 
 <template>
@@ -29,10 +31,11 @@ function handleLogout() {
           </button>
           <div class="flex items-center gap-2">
             <div class="w-10 h-10 bg-gradient-fire rounded-lg flex items-center justify-center">
-              <Flame class="w-5 h-5 text-primary-foreground" />
+              <!-- <Flame class="w-5 h-5 text-primary-foreground" /> -->
+              <img :src="logo" alt="" class="rounded-md">
             </div>
             <div class="hidden sm:block">
-              <h1 class="text-lg font-bold text-foreground">Smart Stove Monitor</h1>
+              <h1 class="text-lg font-bold text-foreground">BIOX Energy Solutions</h1>
             </div>
           </div>
         </div>

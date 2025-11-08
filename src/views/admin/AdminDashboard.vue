@@ -1,37 +1,70 @@
 <script setup>
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import StatCard from '@/components/StatCard.vue'
-import { Users, Flame, Activity, TrendingUp } from 'lucide-vue-next'
+import { Users, Flame, Activity, Zap } from 'lucide-vue-next'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
+import { adminService } from '@/services/admin.service'
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const router = useRouter()
 const sidebarOpen = ref(false)
+const totalUsers = ref(0)
+const activeStoves = ref(0)
+const totalFuelToday = ref(0)
+const totalCookingEventsToday = ref(0)
+const labels = ref([])
+
 
 onMounted(() => {
   try {
     const user = JSON.parse(localStorage.getItem('user') || '{}')
     if (!user || user.role !== 'admin') router.push('/login')
+
+    fetchStats()
   } catch {
     router.push('/login')
   }
 })
 
-const labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
-const data = {
-  labels,
+async function fetchStats() {
+  try {
+    const stats = await adminService.getStats()
+    console.log('Admin stats:', stats)
+    totalUsers.value = stats.totalUsers || 0
+    activeStoves.value = stats.activeStoves || 0
+    totalFuelToday.value = stats.totalFuelToday || 0
+    totalCookingEventsToday.value = stats.totalCookingEventsToday || 0
+    
+    // Update both labels and data for the chart
+    data.value = {
+      labels: stats.dateRange,
+      datasets: [{
+        label: 'Fuel (kg)',
+        data: stats.fuelChartData,
+        backgroundColor: 'hsl(var(--primary))',
+        borderRadius: 8,
+      }]
+    }
+  } catch (error) {
+    console.error('Failed to fetch admin stats:', error)
+  }
+}
+
+const data = ref({
+  labels: [],
   datasets: [{
     label: 'Fuel (kg)',
-    data: [45,52,48,61,39,68,55],
-    backgroundColor: 'hsl(var(--secondary))',
+    data: [],
+    backgroundColor: 'hsl(var(--primary))',
     borderRadius: 8,
   }],
-}
+})
+
 const options = {
   responsive: true,
   maintainAspectRatio: false,
@@ -67,10 +100,10 @@ const options = {
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatCard title="Total Users" :icon="Users" value="1,284" trend="+18% this month" :trendUp="true" iconBg="cool" />
-            <StatCard title="Active Stoves" :icon="Flame" value="2,847" trend="+23% this month" :trendUp="true" iconBg="fire" />
-            <StatCard title="Total Fuel Today" :icon="Activity" value="342 kg" trend="+8% vs yesterday" :trendUp="true" iconBg="cool" />
-            <StatCard title="Avg Efficiency" value="82%" :icon="TrendingUp" trend="+2% improvement" :trendUp="true" iconBg="cool" />
+            <StatCard title="Total Users" :icon="Users" :value="`${totalUsers}`" trend="+18% this month" :trendUp="true" iconBg="cool" />
+            <StatCard title="Active Stoves" :icon="Flame" :value="`${activeStoves}`" trend="+23% this month" :trendUp="true" iconBg="fire" />
+            <StatCard title="Total Fuel Today" :icon="Activity" :value="`${totalFuelToday} Kg`" trend="+8% vs yesterday" :trendUp="true" iconBg="cool" />
+            <StatCard title="Cooking Events" :icon="Zap" :value="`${totalCookingEventsToday}`" trend="+2% improvement" :trendUp="true" iconBg="cool" />
           </div>
 
           <div class="border border-border rounded-xl shadow-card">

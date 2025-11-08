@@ -4,7 +4,7 @@ const props = defineProps({
   value: { type: String, required: true },
   trend: { type: String, default: '' },
   trendUp: { type: Boolean, default: undefined },
-  icon: { type: Object, default: null },
+  icon: { type: Function, default: null },
   iconBg: { type: String, default: '' },
 })
 </script>
@@ -20,9 +20,9 @@ const props = defineProps({
         <component v-if="icon" :is="icon" class="w-5 h-5 text-primary-foreground" />
       </div>
     </div>
-    <p v-if="trend" class="mt-2 text-xs" :class="trendUp === true ? 'text-emerald-600' : trendUp === false ? 'text-rose-600' : 'text-muted-foreground'">
+    <!-- <p v-if="trend" class="mt-2 text-xs" :class="trendUp === true ? 'text-emerald-600' : trendUp === false ? 'text-rose-600' : 'text-muted-foreground'">
       {{ trend }}
-    </p>
+    </p> -->
   </div>
 </template>
 

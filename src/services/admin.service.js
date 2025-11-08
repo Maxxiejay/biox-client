@@ -9,6 +9,10 @@ export const adminService = {
         const response = await api.get('/admin/usage')
         return response.data
     },
+    async getStats(){
+        const response = await api.get('/admin/stats')
+        return response.data
+    },
     async getAllUsers(){
         const response = await api.get('/admin/users')
         return response.data

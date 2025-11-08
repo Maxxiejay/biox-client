@@ -1,5 +1,5 @@
 <script setup>
-import { Flame, LayoutDashboard, Users, Settings, X } from 'lucide-vue-next'
+import { Flame, LayoutDashboard, Users, Settings, X, Menu } from 'lucide-vue-next'
 import { computed } from 'vue'
 import { useRoute } from 'vue-router'
 
@@ -40,8 +40,8 @@ const links = computed(() => (props.isAdmin ? adminLinks : userLinks))
       <div class="flex flex-col h-full">
         <div class="flex items-center justify-between p-4 border-b border-border">
           <div class="flex items-center gap-2">
-            <div class="w-8 h-8 bg-gradient-fire rounded-lg flex items-center justify-center">
-              <Flame class="w-4 h-4 text-primary-foreground" />
+            <div class="w-8 h-8  rounded-lg flex items-center justify-center">
+              <Menu class="w-4 h-4 text-primary" />
             </div>
             <span class="font-semibold text-foreground">Menu</span>
           </div>
@@ -50,7 +50,7 @@ const links = computed(() => (props.isAdmin ? adminLinks : userLinks))
           </button>
         </div>
 
-        <nav class="flex-1 p-4 space-y-2">
+        <nav class="flex-1 p-4 space-y-2 flex flex-col gap-3">
           <RouterLink v-for="link in links" :key="link.to" :to="link.to" @click="$emit('close')">
             <div
               :class="[
