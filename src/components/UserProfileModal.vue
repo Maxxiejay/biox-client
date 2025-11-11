@@ -14,7 +14,7 @@
               <Calendar class="w-4 h-4" />
               Joined {{ formatDate(currentUser.createdAt) }}
             </div>
-            <select v-model="role" @input="changeRole(currentUser.id, role)" id="">
+            <select v-model="role" @change="changeRole(currentUser.id)" id="">
                 <option value="admin">Admin</option>
                 <option value="user">User</option>
             </select>
@@ -103,7 +103,7 @@
 </template>
 
 <script setup>
-import { computed, ref } from 'vue'
+import { computed, ref, watch } from 'vue'
 import { User, Calendar, Box, Flame, Clock, BarChart3 } from 'lucide-vue-next'
 import { adminService } from '@/services/admin.service'
 import { toast } from 'vue-sonner'
@@ -114,6 +114,7 @@ const props = defineProps({
     default: null
   }
 })
+
 
 const role = ref(props.currentUser?.role || 'user')
 
@@ -144,11 +145,22 @@ const formatDuration = (minutes) => {
   return `${hours}h ${mins}m`
 }
 
-async function changeRole(userId, role){
+watch(() => props.currentUser?.role, (newRole) => {
+  if (newRole) {
+    role.value = newRole
+  }
+}, { immediate: true })
+
+async function changeRole(userId){
+  const newRole = role.value
+  console.log('Changing role to:', newRole);
+  
   try {
-    await adminService.changeRole(userId, role)
+    await adminService.changeRole(userId, newRole)
     toast.success("User role successfully changed")
   } catch (error) {
+    // Revert the select back to previous value on error
+    role.value = props.currentUser?.role || 'user'
     toast.error("Error changing role")
     console.error("Error changing role:", error)
   }
