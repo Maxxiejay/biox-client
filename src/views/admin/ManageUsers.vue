@@ -66,6 +66,8 @@ function formatDate(dateStr) {
   return date.toLocaleDateString(undefined, { year: 'numeric', month: 'short', day: 'numeric' })
 }
 
+
+
 function formatDuration(minutes) {
   if (minutes == null) return '—'
   const h = Math.floor(minutes / 60)
@@ -115,18 +117,18 @@ function handleViewUser(userId) {
             <div class="p-6 overflow-x-auto">
               <table class="w-full text-sm">
                 <thead>
-                  <tr class="text-left border-b border-border">
-                    <th class="py-2 pr-4">User</th>
-                    <th class="py-2 pr-4">Email</th>
-                    <th class="py-2 pr-4">Stoves</th>
-                    <th class="py-2 pr-4">Total Fuel Used</th>
-                    <th class="py-2 pr-4">Joined</th>
+                  <tr class="text-center border-b border-border">
+                    <th class="py-2 px-4">User</th>
+                    <th class="py-2 px-4">Email</th>
+                    <th class="py-2 px-4">Stoves</th>
+                    <th class="py-2 px-4">Total Fuel Used</th>
+                    <th class="py-2 px-4">Joined</th>
                     <th class="py-2 pr-0 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="u in filteredUsers" :key="u.id" class="border-b border-border/60">
-                    <td class="py-3 pr-4 font-medium">
+                  <tr v-for="u in filteredUsers" :key="u.id" class="border-b border-border/60 text-center">
+                    <td class="py-3 px-4 font-medium">
                       <div class="flex items-center gap-2">
                         <div class="w-8 h-8 bg-gradient-cool rounded-full flex items-center justify-center">
                           <span class="text-xs font-medium text-secondary-foreground">{{ u.name[0] }}</span>
@@ -134,14 +136,14 @@ function handleViewUser(userId) {
                         {{ u.name }}
                       </div>
                     </td>
-                    <td class="py-3 pr-4">{{ u.email }}</td>
-                    <td class="py-3 pr-4">
+                    <td class="py-3 px-4">{{ u.email }}</td>
+                    <td class="py-3 px-4">
                       <span class="inline-flex items-center px-2 py-1 rounded-md text-xs border border-border">{{ u.stoves.length }} stoves</span>
                     </td>
-                    <td class="py-3 pr-4 text-center">{{ u.usageSummary.totalFuelUsed }}</td>
-                    <td class="py-3 pr-4">{{ formatDate(u.createdAt) }}</td>
+                    <td class="py-3 px-4 text-center">{{ u.usageSummary.totalFuelUsed }}</td>
+                    <td class="py-3 px-4">{{ formatDate(u.createdAt) }}</td>
                     <td class="py-3 pr-0 text-right">
-                      <button @click="handleViewUser(u.id)" class="h-8 px-3 rounded-md bg-primary hover:scale-105">View User</button>
+                      <button @click="handleViewUser(u.id)" class="h-8 px-3 rounded-md bg-primary hover:scale-105">View</button>
                     </td>
                   </tr>
                 </tbody>

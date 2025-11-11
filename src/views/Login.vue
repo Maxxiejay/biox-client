@@ -75,11 +75,11 @@ async function handleLogin(e) {
             <span class="text-muted-foreground">Don't have an account? </span>
             <RouterLink to="/register" class="text-primary hover:underline font-medium">Sign up</RouterLink>
           </div>
-          <div class="mt-6 p-4 bg-muted rounded-lg text-sm">
+          <!-- <div class="mt-6 p-4 bg-muted rounded-lg text-sm">
             <p class="font-medium mb-2">Demo Accounts:</p>
             <p class="text-muted-foreground">User: user@demo.com / password</p>
             <p class="text-muted-foreground">Admin: admin@demo.com / password</p>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

@@ -1,46 +1,62 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import StatCard from '@/components/StatCard.vue'
-import { Flame, Clock, Calendar, Activity } from 'lucide-vue-next'
-import { Line } from 'vue-chartjs'
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend,
-} from 'chart.js'
+import { Flame, Clock, Calendar, Activity, Zap, Droplet } from 'lucide-vue-next'
+import { Bar } from 'vue-chartjs'
+import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
+import { userService } from '../services/user.service'
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+const totalStoves = ref(0)
+const avgCookingTime = ref(0)
+const totalFuelToday = ref(0)
+const totalCookingEventsToday = ref(0)
+const labels = ref([])
+
+ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 const sidebarOpen = ref(false)
 
-const labels = ['Mon','Tue','Wed','Thu','Fri','Sat','Sun']
-const data = {
-  labels,
-  datasets: [
-    {
-      label: 'Fuel (kg)',
-      data: [2.4, 3.1, 2.8, 3.5, 2.2, 4.1, 3.8],
-      borderColor: 'hsl(var(--primary))',
-      backgroundColor: 'hsl(var(--primary))',
-      tension: 0.4,
-      pointRadius: 4,
-      pointHoverRadius: 6,
-    },
-  ],
+async function fetchStats() {
+  try {
+    const stats = await userService.getStats()
+    console.log('User stats:', stats)
+    totalStoves.value = stats.totalStoves || 0
+    avgCookingTime.value = stats.avgCookingTime || 0
+    totalFuelToday.value = stats.totalFuelToday || 0
+    totalCookingEventsToday.value = stats.totalCookingEventsToday || 0
+    
+    // Update both labels and data for the chart
+    data.value = {
+      labels: stats.dateRange,
+      datasets: [{
+        label: 'Fuel (kg)',
+        data: stats.fuelChartData,
+        backgroundColor: 'hsl(var(--primary))',
+        borderRadius: 8,
+      }]
+    }
+  } catch (error) {
+    console.error('Failed to fetch admin stats:', error)
+  }
 }
+
+const data = ref({
+  labels: [],
+  datasets: [{
+    label: 'Fuel (kg)',
+    data: [],
+    backgroundColor: 'hsl(var(--primary))',
+    borderRadius: 8,
+  }],
+})
 
 const options = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
-    legend: { labels: { color: getComputedStyle(document.documentElement).getPropertyValue('--foreground') } },
+    legend: { labels: { color: 'hsl(var(--foreground))' } },
     tooltip: {
       backgroundColor: 'hsl(var(--card))',
       titleColor: 'hsl(var(--foreground))',
@@ -54,6 +70,15 @@ const options = {
     y: { ticks: { color: 'hsl(var(--muted-foreground))' }, grid: { color: 'hsl(var(--border) / 0.5)' } },
   },
 }
+
+onMounted(() => {
+  try {
+    fetchStats()
+  } catch {
+    router.push('/login')
+  }
+})
+
 </script>
 
 <template>
@@ -71,10 +96,10 @@ const options = {
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatCard title="Total Fuel Used" value="21.9 kg" trend="+12% from last week" :trendUp="true" iconBg="fire" />
-            <StatCard title="Avg Cooking Time" value="45 min" trend="-5% from last week" :trendUp="false" iconBg="cool" />
-            <StatCard title="Active Days" value="7 days" iconBg="muted" />
-            <StatCard title="Efficiency Score" value="87%" trend="+3% improvement" :trendUp="true" iconBg="cool" />
+            <StatCard :icon="Droplet" title="Total Fuel Used" :value="`${totalFuelToday}`" trend="+12% from last week" :trendUp="true" iconBg="cool" />
+            <StatCard :icon="Clock" title="Avg Time (mins)" :value="`${avgCookingTime}`" trend="-5% from last week" :trendUp="false" iconBg="cool" />
+            <StatCard :icon="Zap" title="Cooking events" :value="`${totalCookingEventsToday}`" iconBg="muted" />
+            <StatCard :icon="Flame" title="Total Stoves" :value="`${totalStoves}`" trend="+3% improvement" :trendUp="true" iconBg="fire" />
           </div>
 
           <div class="border border-border rounded-xl shadow-card">
@@ -83,7 +108,7 @@ const options = {
               <p class="text-sm text-muted-foreground">Your fuel consumption over the past 7 days</p>
             </div>
             <div class="h-80 p-4">
-              <Line :data="data" :options="options" />
+              <Bar :data="data" :options="options" />
             </div>
           </div>
         </div>

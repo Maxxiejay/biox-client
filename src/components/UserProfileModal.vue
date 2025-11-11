@@ -14,9 +14,13 @@
               <Calendar class="w-4 h-4" />
               Joined {{ formatDate(currentUser.createdAt) }}
             </div>
-            <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
+            <select v-model="role" @input="changeRole(currentUser.id, role)" id="">
+                <option value="admin">Admin</option>
+                <option value="user">User</option>
+            </select>
+            <!-- <span class="px-3 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
               {{ currentUser.role }}
-            </span>
+            </span> -->
           </div>
         </div>
       </div>
@@ -99,8 +103,10 @@
 </template>
 
 <script setup>
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 import { User, Calendar, Box, Flame, Clock, BarChart3 } from 'lucide-vue-next'
+import { adminService } from '@/services/admin.service'
+import { toast } from 'vue-sonner'
 
 const props = defineProps({
   currentUser: {
@@ -108,6 +114,8 @@ const props = defineProps({
     default: null
   }
 })
+
+const role = ref(props.currentUser?.role || 'user')
 
 // Computed properties for usage summary
 const stoveCount = computed(() => props.currentUser?.stoves?.length || 0)
@@ -134,6 +142,16 @@ const formatDuration = (minutes) => {
   if (hours === 0) return `${mins}m`
   if (mins === 0) return `${hours}h`
   return `${hours}h ${mins}m`
+}
+
+async function changeRole(userId, role){
+  try {
+    await adminService.changeRole(userId, role)
+    toast.success("User role successfully changed")
+  } catch (error) {
+    toast.error("Error changing role")
+    console.error("Error changing role:", error)
+  }
 }
 </script>
 

@@ -14,7 +14,7 @@ const route = useRoute()
 const userLinks = [
   { to: '/dashboard', icon: LayoutDashboard, label: 'Dashboard' },
   { to: '/stoves/pair', icon: Flame, label: 'Pair Stove' },
-  { to: '/settings', icon: Settings, label: 'Settings' },
+  // { to: '/settings', icon: Settings, label: 'Settings' },
 ]
 
 const adminLinks = [

@@ -1,16 +1,8 @@
 import api from "./api";
 
-export const adminService = {
-    async registerStove(data){
-        const response = await api.post('admin/stoves/register', data)
-        return response.data
-    },
-    async getAllUsage(){
-        const response = await api.get('/admin/usage')
-        return response.data
-    },
+export const userService = {
     async getStats(){
-        const response = await api.get('/admin/stats')
+        const response = await api.get('/usage/stats')
         return response.data
     },
     async getAllUsers(){
