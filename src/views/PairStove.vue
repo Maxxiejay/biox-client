@@ -6,12 +6,15 @@ import Sidebar from '@/components/Sidebar.vue'
 import { Flame, QrCode } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { stoveService } from '../services/stove.service'
+import { QrcodeStream } from 'vue-qrcode-reader'
 
 const router = useRouter()
 const sidebarOpen = ref(false)
 const stoveId = ref('')
 const pairingCode = ref('')
 const isLoading = ref(false)
+const decodedMessage = ref(null)
+const showScanner = ref(false)
 
 onMounted(() => {
   const user = localStorage.getItem('user')
@@ -37,6 +40,30 @@ function handlePair(e) {
       })
     }
     isLoading.value = false
+}
+
+function startScanning() {
+  decodedMessage.value = null
+  showScanner.value = true
+}
+
+function stopScanning() {
+  showScanner.value = false
+}
+
+function onDecode(decodedString) {
+  decodedMessage.value = decodedString
+  stopScanning()
+}
+
+function onInit(promise) {
+  promise
+    .then(() => {
+      console.log('Camera access granted!')
+    })
+    .catch(error => {
+      alert('Camera access denied or unavailable: ' + error.message)
+    })
 }
 </script>
 
@@ -78,7 +105,7 @@ function handlePair(e) {
                     <button type="submit" :disabled="isLoading" class="flex-1 inline-flex items-center justify-center h-10 rounded-md bg-primary text-primary-foreground hover:opacity-90 disabled:opacity-60">
                       {{ isLoading ? 'Pairing...' : 'Pair Stove' }}
                     </button>
-                    <button type="button" class="flex-1 inline-flex items-center justify-center h-10 rounded-md border border-border bg-background hover:bg-muted">
+                    <button @click="startScanning" type="button" class="flex-1 inline-flex items-center justify-center h-10 rounded-md border border-border bg-background hover:bg-muted">
                       <QrCode class="mr-2 h-4 w-4" />
                       Scan QR Code
                     </button>
@@ -102,6 +129,24 @@ function handlePair(e) {
           </div>
         </div>
       </main>
+    </div>
+     <div 
+      v-if="showScanner" 
+      class="fixed inset-0 bg-black bg-opacity-80 flex flex-col items-center justify-center"
+    >
+      <QrcodeStream @decode="onDecode" @init="onInit" />
+      
+      <button 
+        @click="stopScanning" 
+        class="mt-4 bg-red-600 text-white px-4 py-2 rounded"
+      >
+        Close
+      </button>
+    </div>
+
+    <!-- Decoded message -->
+    <div v-if="decodedMessage" class="mt-4 text-green-600 text-lg">
+      ✅ Message: {{ decodedMessage }}
     </div>
   </div>
 </template>
