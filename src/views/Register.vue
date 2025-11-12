@@ -11,6 +11,8 @@ const email = ref('')
 const password = ref('')
 const isLoading = ref(false)
 
+const logo = new URL('@/assets/BIOX-flame.jpg', import.meta.url).href
+
 async function handleRegister(e) {
   e.preventDefault()
   isLoading.value = true
@@ -37,9 +39,9 @@ async function handleRegister(e) {
     <div class="w-full max-w-md animate-fade-in">
       <div class="text-center mb-8">
         <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-fire rounded-2xl shadow-fire mb-4">
-          <Flame class="w-8 h-8 text-primary-foreground" />
+          <img :src="logo" alt="" class="rounded-md">
         </div>
-        <h1 class="text-3xl font-bold text-foreground mb-2">Smart Stove Monitor</h1>
+        <h1 class="text-3xl font-bold text-foreground mb-2">BIOX Energy Solutions</h1>
         <p class="text-muted-foreground">Create your account to get started</p>
       </div>
 
