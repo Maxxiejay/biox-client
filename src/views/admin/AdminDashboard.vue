@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import Navbar from '@/components/Navbar.vue'
 import Sidebar from '@/components/Sidebar.vue'
 import StatCard from '@/components/StatCard.vue'
-import { Users, Flame, Activity, Zap } from 'lucide-vue-next'
+import { Users, Clock, Droplet, Zap } from 'lucide-vue-next'
 import { Bar } from 'vue-chartjs'
 import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from 'chart.js'
 import { adminService } from '@/services/admin.service'
@@ -104,8 +104,8 @@ const options = {
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatCard title="Total Users" :icon="Users" :value="`${totalUsers}`" trend="+18% this month" :trendUp="true" iconBg="cool" />
             <!-- <StatCard title="Active Stoves" :icon="Flame" :value="`${activeStoves}`" trend="+23% this month" :trendUp="true" iconBg="fire" /> -->
-            <StatCard title="Total Fuel Used" :icon="Activity" :value="`${totalFuelUsed} Kg`" trend="+8% vs yesterday" :trendUp="true" iconBg="cool" />
-            <StatCard title="Total Cooking Time" :icon="Zap" :value="`${totalCookingTime} mins`" trend="+2% improvement" :trendUp="true" iconBg="cool" />
+            <StatCard title="Total Fuel Used" :icon="Droplet" :value="`${totalFuelUsed} Kg`" trend="+8% vs yesterday" :trendUp="true" iconBg="fire" />
+            <StatCard title="Total Cooking Time" :icon="Clock" :value="`${totalCookingTime} mins`" trend="+2% improvement" :trendUp="true" iconBg="cool" />
             <StatCard title="Total Cooking Events" :icon="Zap" :value="`${totalCookingEvents}`" trend="+2% improvement" :trendUp="true" iconBg="cool" />
           </div>
 
