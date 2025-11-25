@@ -9,9 +9,9 @@ import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Toolti
 import { userService } from '../services/user.service'
 
 const totalStoves = ref(0)
-const avgCookingTime = ref(0)
-const totalFuelToday = ref(0)
-const totalCookingEventsToday = ref(0)
+const totalCookingTime = ref(0)
+const totalFuelUsed = ref(0)
+const totalCookingEvents = ref(0)
 const labels = ref([])
 
 ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
@@ -23,9 +23,9 @@ async function fetchStats() {
     const stats = await userService.getStats()
     console.log('User stats:', stats)
     totalStoves.value = stats.totalStoves || 0
-    avgCookingTime.value = stats.avgCookingTime || 0
-    totalFuelToday.value = stats.totalFuelToday || 0
-    totalCookingEventsToday.value = stats.totalCookingEventsToday || 0
+    totalCookingTime.value = stats.totalCookingTime || 0
+    totalFuelUsed.value = stats.totalFuelUsed || 0
+    totalCookingEvents.value = stats.totalCookingEvents || 0
     
     // Update both labels and data for the chart
     data.value = {
@@ -96,9 +96,9 @@ onMounted(() => {
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
-            <StatCard :icon="Droplet" title="Total Fuel Used" :value="`${totalFuelToday}`" trend="+12% from last week" :trendUp="true" iconBg="cool" />
-            <StatCard :icon="Clock" title="Avg Time (mins)" :value="`${avgCookingTime}`" trend="-5% from last week" :trendUp="false" iconBg="cool" />
-            <StatCard :icon="Zap" title="Cooking events" :value="`${totalCookingEventsToday}`" iconBg="muted" />
+            <StatCard :icon="Droplet" title="Total Fuel Used" :value="`${totalFuelUsed}`" trend="+12% from last week" :trendUp="true" iconBg="cool" />
+            <StatCard :icon="Clock" title="Total Time (mins)" :value="`${totalCookingTime}`" trend="-5% from last week" :trendUp="false" iconBg="cool" />
+            <StatCard :icon="Zap" title="Cooking events" :value="`${totalCookingEvents}`" iconBg="muted" />
             <StatCard :icon="Flame" title="Total Stoves" :value="`${totalStoves}`" trend="+3% improvement" :trendUp="true" iconBg="fire" />
           </div>
 
