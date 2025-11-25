@@ -103,7 +103,7 @@ const options = {
 
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
             <StatCard title="Total Users" :icon="Users" :value="`${totalUsers}`" trend="+18% this month" :trendUp="true" iconBg="cool" />
-            <StatCard title="Active Stoves" :icon="Flame" :value="`${activeStoves}`" trend="+23% this month" :trendUp="true" iconBg="fire" />
+            <!-- <StatCard title="Active Stoves" :icon="Flame" :value="`${activeStoves}`" trend="+23% this month" :trendUp="true" iconBg="fire" /> -->
             <StatCard title="Total Fuel Used" :icon="Activity" :value="`${totalFuelUsed} Kg`" trend="+8% vs yesterday" :trendUp="true" iconBg="cool" />
             <StatCard title="Total Cooking Time" :icon="Zap" :value="`${totalCookingTime} mins`" trend="+2% improvement" :trendUp="true" iconBg="cool" />
             <StatCard title="Total Cooking Events" :icon="Zap" :value="`${totalCookingEvents}`" trend="+2% improvement" :trendUp="true" iconBg="cool" />
